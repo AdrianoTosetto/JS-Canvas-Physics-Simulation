@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Projectile Launch</title>
+    <style>
+        body {
+            background: #e0e0e0;
+        }
+        #canvasContainer {
+            height: 500px;
+            width: 500px;
+            margin: 0 auto;
+        }
+        canvas {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvasContainer">
+        <canvas height="500" width="500" id="canvas">
+
+        </canvas>
+    </div>
+    <script src= "vector2D.js"></script>
+    <script src= "ball.js"></script>
+    <script>
+            const canvas = document.getElementById('canvas')
+            const context = canvas.getContext('2d')
+            let iTime = new Date().getTime()
+            let cTime = 0
+            let elapsedSeconds = 0
+            let radius = 15
+            const ball = new Ball(radius,'#1567c5')
+            const ipos = new Vector2D(0 + radius, canvas.height - radius)
+            ball.pos2D = ipos
+            const gravityAcc = new Vector2D(0, 9.8)
+            const ballVelocity = new Vector2D(20, -80)
+            const init = () => {
+                animate()
+            }
+            const animate = () => {
+                cTime = new Date().getTime()
+                id = requestAnimationFrame(animate, canvas)
+                if (cTime - iTime > 10) {
+                    //console.log('updating :D')
+                    elapsedSeconds++
+                    iTime = cTime
+                }
+                const temp = elapsedSeconds / 10
+                ball.pos2D = ipos.addScaled(ballVelocity, temp).addScaled(gravityAcc,0.5*temp*temp);
+                clearContext(context)
+                ball.draw(context)
+            }
+            const clearContext = context => {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            window.onload = init
+        </script>
+</body>
+</html>
